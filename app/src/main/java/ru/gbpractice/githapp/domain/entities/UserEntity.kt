@@ -1,4 +1,4 @@
-package ru.gbpractice.githapp
+package ru.gbpractice.githapp.domain.entities
 
 data class UserEntity (
     val login: String,

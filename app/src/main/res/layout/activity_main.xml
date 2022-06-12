@@ -2,37 +2,53 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    android:orientation="vertical"
+    tools:context=".ui.users.MainActivity">
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/header_title"
-        android:text="@string/gith_app"
-        android:textStyle="bold"
-        android:textSize="25sp"
-        android:layout_gravity="center"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"/>
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/user_list_elements_margin"
+        android:layout_marginBottom="@dimen/user_list_elements_margin"
+        android:text="@string/gith_app"
+        android:textSize="25sp"
+        android:textStyle="bold" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/button_refresh_user_list"
-        android:layout_gravity="center"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/refresh_user_list"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
-       />
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/user_list_elements_margin"
+        android:layout_marginBottom="@dimen/user_list_elements_margin"
+        android:text="@string/refresh_user_list" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/users_list_recycler_view"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent">
+
+
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center"
+            android:indeterminateTint="@color/primary_indigo"
+            android:visibility="visible"/>
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/users_list_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="@dimen/user_list_elements_margin"
+            android:layout_marginEnd="@dimen/user_list_elements_margin"
+            android:visibility="invisible"/>
+
+    </FrameLayout>
 
 </LinearLayout>

@@ -1,9 +1,11 @@
-package ru.gbpractice.githapp
+package ru.gbpractice.githapp.ui.users
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import coil.api.load
+import ru.gbpractice.githapp.R
+import ru.gbpractice.githapp.domain.entities.UserEntity
 import ru.gbpractice.githapp.databinding.ItemUserBinding
 
 class UserViewHolder(parent: ViewGroup): RecyclerView.ViewHolder(
