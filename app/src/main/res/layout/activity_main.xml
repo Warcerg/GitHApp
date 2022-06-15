@@ -15,8 +15,9 @@
         android:layout_marginTop="@dimen/user_list_elements_margin"
         android:layout_marginBottom="@dimen/user_list_elements_margin"
         android:text="@string/gith_app"
-        android:textSize="25sp"
-        android:textStyle="bold" />
+        android:textSize="@dimen/header_text_size"
+        android:textStyle="bold"
+        android:textColor="@color/primary_indigo_dark"/>
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/button_refresh_user_list"
@@ -25,7 +26,11 @@
         android:layout_gravity="center"
         android:layout_marginTop="@dimen/user_list_elements_margin"
         android:layout_marginBottom="@dimen/user_list_elements_margin"
-        android:text="@string/refresh_user_list" />
+        android:background="@color/secondary_yellow"
+        android:paddingStart="@dimen/user_list_elements_margin"
+        android:paddingEnd="@dimen/user_list_elements_margin"
+        android:text="@string/refresh_user_list"
+        android:textColor="@color/primary_indigo_dark"/>
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -34,8 +39,8 @@
 
         <ProgressBar
             android:id="@+id/progress_bar"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_width="@dimen/progress_bar_size"
+            android:layout_height="@dimen/progress_bar_size"
             android:layout_gravity="center"
             android:indeterminateTint="@color/primary_indigo"
             android:visibility="visible"/>
