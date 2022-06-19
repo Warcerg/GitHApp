@@ -1,11 +1,10 @@
 package ru.gbpractice.githapp.ui.users
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
-import ru.gbpractice.githapp.domain.repos.UserListRepo
 import ru.gbpractice.githapp.app
 import ru.gbpractice.githapp.databinding.ActivityMainBinding
 import ru.gbpractice.githapp.domain.entities.UserEntity
@@ -14,16 +13,27 @@ import ru.gbpractice.githapp.domain.entities.UserEntity
 class MainActivity : AppCompatActivity(), UsersContract.View {
     private lateinit var binding: ActivityMainBinding
     private val adapter = UsersAdapter()
-    private val presenter: UsersContract.Presenter by lazy { app.userListPresenter }
+    private lateinit var presenter: UsersContract.Presenter
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        presenter.attach(this)
 
         initViews()
+
+        presenter = retainPresenter()
+        presenter.attach(this)
+
+    }
+
+    private fun retainPresenter(): UsersContract.Presenter {
+        return lastCustomNonConfigurationInstance as? UsersContract.Presenter ?: app.userListPresenter
+    }
+
+    override fun onRetainCustomNonConfigurationInstance(): UsersContract.Presenter {
+        return presenter
     }
 
     override fun onDestroy() {
