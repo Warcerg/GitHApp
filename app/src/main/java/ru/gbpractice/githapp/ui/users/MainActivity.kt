@@ -8,24 +8,31 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import ru.gbpractice.githapp.domain.repos.UserListRepo
 import ru.gbpractice.githapp.app
 import ru.gbpractice.githapp.databinding.ActivityMainBinding
+import ru.gbpractice.githapp.domain.entities.UserEntity
 
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), UsersContract.View {
     private lateinit var binding: ActivityMainBinding
     private val adapter = UsersAdapter()
-    private val usersRepo: UserListRepo by lazy {app.userListRepo }
+    private val presenter: UsersContract.Presenter by lazy { app.userListPresenter }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        presenter.attach(this)
 
         initViews()
     }
 
+    override fun onDestroy() {
+        presenter.detach()
+        super.onDestroy()
+    }
+
     private fun initViews() {
-        showProgressBar(false)
+        showLoading(false)
         initRefreshButton()
         initRecyclerView()
 
@@ -34,17 +41,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun initRefreshButton() {
         binding.buttonRefreshUserList.setOnClickListener {
-            showProgressBar(true)
-            usersRepo.getUserList(
-                onSuccess = {
-                    showProgressBar(false)
-                    adapter.setData(it)
-                },
-                onError = {
-                    showProgressBar(false)
-                    Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()
-                }
-            )
+            presenter.onRefreshUserList()
         }
     }
 
@@ -53,8 +50,17 @@ class MainActivity : AppCompatActivity() {
         binding.usersListRecyclerView.adapter = adapter
     }
 
-    private fun showProgressBar(progressBarIsVissible: Boolean) {
-        binding.progressBar.isVisible = progressBarIsVissible
-        binding.usersListRecyclerView.isVisible = !progressBarIsVissible
+
+    override fun showUsersList(users: List<UserEntity>) {
+        adapter.setData(users)
+    }
+
+    override fun showLoading(isLoading: Boolean) {
+        binding.progressBar.isVisible = isLoading
+        binding.usersListRecyclerView.isVisible = !isLoading
+    }
+
+    override fun showError(t: Throwable) {
+        Toast.makeText(this, t.message, Toast.LENGTH_LONG).show()
     }
 }
