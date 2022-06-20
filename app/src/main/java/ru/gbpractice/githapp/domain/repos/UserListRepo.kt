@@ -9,4 +9,5 @@ interface UserListRepo {
         onSuccess: (List<UserEntity>) -> Unit,
         onError: ((Throwable) -> Unit)? = null
     )
+
 }
