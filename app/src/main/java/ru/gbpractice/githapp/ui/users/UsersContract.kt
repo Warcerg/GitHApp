@@ -8,6 +8,7 @@ interface UsersContract {
         fun showUsersList(users: List<UserEntity>)
         fun showLoading(isLoading: Boolean)
         fun showError(t: Throwable)
+        fun showUserDetails(userEntity: UserEntity)
 
     }
 
@@ -16,5 +17,6 @@ interface UsersContract {
         fun detach()
 
         fun onRefreshUserList()
+        fun onSelectUser(userEntity: UserEntity)
     }
 }

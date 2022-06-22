@@ -38,4 +38,8 @@ class UsersPresenter(private val userListRepo: UserListRepo) : UsersContract.Pre
             }
         )
     }
+
+    override fun onSelectUser(userEntity: UserEntity) {
+        view?.showUserDetails(userEntity)
+    }
 }

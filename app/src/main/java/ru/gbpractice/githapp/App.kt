@@ -15,7 +15,7 @@ class App: Application() {
     private val userListRepo: UserListRepo by lazy { RetrofitUserListRepoImpl() }
     private val userDetailsRepo: UserDetailsRepo by lazy { RetrofitUserDetailsRepoImpl()}
     val userListPresenter: UsersContract.Presenter by lazy {UsersPresenter(userListRepo)}
-    val userDetailsPresenter: UserDetailsPresenter by lazy {UserDetailsPresenter(userDetailsPresenter)}
+    val userDetailsPresenter: UserDetailsPresenter by lazy {UserDetailsPresenter(userDetailsRepo)}
 
 }
 

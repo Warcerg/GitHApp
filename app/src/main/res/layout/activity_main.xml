@@ -52,7 +52,9 @@
             android:layout_height="match_parent"
             android:layout_marginStart="@dimen/user_list_elements_margin"
             android:layout_marginEnd="@dimen/user_list_elements_margin"
-            android:visibility="invisible"/>
+            android:visibility="invisible"
+            tools:itemCount="10"
+            tools:listitem="@layout/item_user"/>
 
     </FrameLayout>
 

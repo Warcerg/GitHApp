@@ -1,6 +1,8 @@
 package ru.gbpractice.githapp.ui.users
 
+import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
@@ -8,9 +10,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import ru.gbpractice.githapp.app
 import ru.gbpractice.githapp.databinding.ActivityMainBinding
 import ru.gbpractice.githapp.domain.entities.UserEntity
+import ru.gbpractice.githapp.ui.details.UserDetailsActivity
 
 
 class MainActivity : AppCompatActivity(), UsersContract.View {
+
     private lateinit var binding: ActivityMainBinding
     private val adapter = UsersAdapter()
     private lateinit var presenter: UsersContract.Presenter
@@ -57,6 +61,11 @@ class MainActivity : AppCompatActivity(), UsersContract.View {
 
     private fun initRecyclerView() {
         binding.usersListRecyclerView.layoutManager = LinearLayoutManager(this)
+        adapter.setOnUserClickListener(object : UsersAdapter.OnUserClickListener {
+            override fun onUserItemClick(userEntity: UserEntity) {
+                presenter.onSelectUser(userEntity)
+            }
+        })
         binding.usersListRecyclerView.adapter = adapter
     }
 
@@ -73,4 +82,12 @@ class MainActivity : AppCompatActivity(), UsersContract.View {
     override fun showError(t: Throwable) {
         Toast.makeText(this, t.message, Toast.LENGTH_LONG).show()
     }
+
+    override fun showUserDetails(userEntity: UserEntity) {
+        val intent = Intent(this, UserDetailsActivity::class.java)
+        intent.putExtra("user", userEntity)
+        startActivity(intent)
+    }
+
+
 }

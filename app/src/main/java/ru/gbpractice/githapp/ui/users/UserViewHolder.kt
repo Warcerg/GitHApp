@@ -1,6 +1,7 @@
 package ru.gbpractice.githapp.ui.users
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import coil.api.load
@@ -13,9 +14,12 @@ class UserViewHolder(parent: ViewGroup): RecyclerView.ViewHolder(
 ) {
     private val binding = ItemUserBinding.bind(itemView)
 
-    fun bind(userEntity: UserEntity) {
+    fun bind(userEntity: UserEntity, onUserClickListener: UsersAdapter.OnUserClickListener?) {
         binding.avatarImageView.load(userEntity.avatarUrl)
         binding.loginTextView.text = userEntity.login
         binding.uidTextView.text = userEntity.id.toString()
+        binding.root.setOnClickListener { onUserClickListener?.onUserItemClick(userEntity) }
     }
+
+
 }

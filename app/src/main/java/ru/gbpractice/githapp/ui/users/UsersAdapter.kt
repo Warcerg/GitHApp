@@ -7,6 +7,8 @@ import ru.gbpractice.githapp.domain.entities.UserEntity
 
 class UsersAdapter: RecyclerView.Adapter<UserViewHolder>() {
     private val data = mutableListOf<UserEntity>()
+    private var onUserClickListener: OnUserClickListener? = null
+
 
     init {
         setHasStableIds(true)
@@ -17,7 +19,8 @@ class UsersAdapter: RecyclerView.Adapter<UserViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: UserViewHolder, position: Int) {
-        holder.bind(data[position])
+        holder.bind(data[position], onUserClickListener)
+
     }
 
     override fun getItemCount(): Int {
@@ -30,4 +33,13 @@ class UsersAdapter: RecyclerView.Adapter<UserViewHolder>() {
         data.addAll(users)
         notifyDataSetChanged()
     }
+
+    fun setOnUserClickListener(onUserClickListener: OnUserClickListener) {
+        this.onUserClickListener = onUserClickListener
+    }
+
+    interface OnUserClickListener {
+        fun onUserItemClick(userEntity: UserEntity)
+    }
+
 }
