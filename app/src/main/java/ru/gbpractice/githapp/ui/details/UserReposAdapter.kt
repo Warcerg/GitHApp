@@ -12,17 +12,22 @@ class UserReposAdapter: RecyclerView.Adapter<UserRepoViewHolder>() {
         setHasStableIds(true)
     }
 
+    override fun getItemId(position: Int) = getItem(position).id
+
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserRepoViewHolder {
         return UserRepoViewHolder(parent)
     }
 
     override fun onBindViewHolder(holder: UserRepoViewHolder, position: Int) {
-        holder.bind(data[position])
+        holder.bind(getItem(position))
     }
 
     override fun getItemCount(): Int {
         return data.size
     }
+
+    private fun getItem(pos: Int) = data[pos]
 
     @SuppressLint("NotifyDataSetChanged")
     fun setData(repos: List<UserRepoEntity>){

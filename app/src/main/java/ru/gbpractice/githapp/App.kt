@@ -12,10 +12,15 @@ import ru.gbpractice.githapp.ui.users.UsersContract
 import ru.gbpractice.githapp.ui.users.UsersPresenter
 
 class App: Application() {
+
     private val userListRepo: UserListRepo by lazy { RetrofitUserListRepoImpl() }
     private val userDetailsRepo: UserDetailsRepo by lazy { RetrofitUserDetailsRepoImpl()}
     val userListPresenter: UsersContract.Presenter by lazy {UsersPresenter(userListRepo)}
     val userDetailsPresenter: UserDetailsPresenter by lazy {UserDetailsPresenter(userDetailsRepo)}
+
+    companion object {
+        const val BUNDLE_KEY = "login"
+    }
 
 }
 
