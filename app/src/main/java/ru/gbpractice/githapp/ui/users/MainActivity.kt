@@ -2,7 +2,6 @@ package ru.gbpractice.githapp.ui.users
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
@@ -20,21 +19,19 @@ class MainActivity : AppCompatActivity(), UsersContract.View {
     private val adapter = UsersAdapter()
     private lateinit var presenter: UsersContract.Presenter
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
         initViews()
-
         presenter = retainPresenter()
         presenter.attach(this)
 
     }
 
     private fun retainPresenter(): UsersContract.Presenter {
-        return lastCustomNonConfigurationInstance as? UsersContract.Presenter ?: app.userListPresenter
+        return lastCustomNonConfigurationInstance as? UsersContract.Presenter
+            ?: app.userListPresenter
     }
 
     override fun onRetainCustomNonConfigurationInstance(): UsersContract.Presenter {
@@ -50,8 +47,6 @@ class MainActivity : AppCompatActivity(), UsersContract.View {
         showLoading(false)
         initRefreshButton()
         initRecyclerView()
-
-
     }
 
     private fun initRefreshButton() {
@@ -89,8 +84,4 @@ class MainActivity : AppCompatActivity(), UsersContract.View {
         intent.putExtra(BUNDLE_KEY, userEntity)
         startActivity(intent)
     }
-
-
-
-
 }

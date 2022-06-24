@@ -9,7 +9,6 @@ class UsersAdapter : RecyclerView.Adapter<UserViewHolder>() {
     private val data = mutableListOf<UserEntity>()
     private var onUserClickListener: OnUserClickListener? = null
 
-
     init {
         setHasStableIds(true)
     }
@@ -22,7 +21,6 @@ class UsersAdapter : RecyclerView.Adapter<UserViewHolder>() {
 
     override fun onBindViewHolder(holder: UserViewHolder, position: Int) {
         holder.bind(getItem(position), onUserClickListener)
-
     }
 
     override fun getItemCount(): Int {
@@ -45,5 +43,4 @@ class UsersAdapter : RecyclerView.Adapter<UserViewHolder>() {
     }
 
     private fun getItem(pos: Int) = data[pos]
-
 }

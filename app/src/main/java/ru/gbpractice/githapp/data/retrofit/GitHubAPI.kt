@@ -1,4 +1,4 @@
-package ru.gbpractice.githapp.domain.repos.retrofit
+package ru.gbpractice.githapp.data.retrofit
 
 import retrofit2.Call
 import retrofit2.http.GET

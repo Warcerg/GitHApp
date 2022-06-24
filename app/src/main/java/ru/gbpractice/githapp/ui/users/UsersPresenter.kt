@@ -9,7 +9,6 @@ class UsersPresenter(private val userListRepo: UserListRepo) : UsersContract.Pre
     private var usersList: List<UserEntity>? = null
     private var isLoading: Boolean = false
 
-
     override fun attach(view: UsersContract.View) {
         this.view = view
         view.showLoading(isLoading)

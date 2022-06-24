@@ -7,8 +7,7 @@ import ru.gbpractice.githapp.domain.repos.UserListRepo
 
 private const val DATA_FAKE_LOAD_DELAY = 2_000L
 
-class MockUserListRepoImpl: UserListRepo {
-
+class MockUserListRepoImpl : UserListRepo {
 
     private val data: List<UserEntity> = listOf(
         UserEntity("mojombo", 1, "https://avatars.githubusercontent.com/u/1?v=4"),
@@ -17,7 +16,6 @@ class MockUserListRepoImpl: UserListRepo {
         UserEntity("wycats", 4, "https://avatars.githubusercontent.com/u/4?v=4"),
         UserEntity("ezmobius", 5, "https://avatars.githubusercontent.com/u/5?v=4")
     )
-
 
     override fun getUserList(
         onSuccess: (List<UserEntity>) -> Unit,

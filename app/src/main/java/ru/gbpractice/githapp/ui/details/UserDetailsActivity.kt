@@ -12,9 +12,8 @@ import ru.gbpractice.githapp.databinding.ActivityUserDetailsBinding
 import ru.gbpractice.githapp.domain.entities.UserDetailsEntity
 import ru.gbpractice.githapp.domain.entities.UserEntity
 import ru.gbpractice.githapp.domain.entities.UserRepoEntity
-import ru.gbpractice.githapp.ui.users.UsersContract
 
-class UserDetailsActivity: AppCompatActivity(), DetailsContract.View {
+class UserDetailsActivity : AppCompatActivity(), DetailsContract.View {
 
     private lateinit var binding: ActivityUserDetailsBinding
     private val adapter = UserReposAdapter()
@@ -25,21 +24,18 @@ class UserDetailsActivity: AppCompatActivity(), DetailsContract.View {
         super.onCreate(savedInstanceState)
         binding = ActivityUserDetailsBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        initViews()
 
-
-         initViews()
-
-
-        if(intent != null){
+        if (intent != null) {
             userEntity = intent.getParcelableExtra(BUNDLE_KEY)
         }
         presenter = retainPresenter()
         presenter.attach(this, userEntity as UserEntity)
-
-
     }
+
     private fun retainPresenter(): DetailsContract.Presenter {
-        return lastCustomNonConfigurationInstance as? DetailsContract.Presenter ?: app.userDetailsPresenter
+        return lastCustomNonConfigurationInstance as? DetailsContract.Presenter
+            ?: app.userDetailsPresenter
     }
 
     override fun onDestroy() {
@@ -56,7 +52,7 @@ class UserDetailsActivity: AppCompatActivity(), DetailsContract.View {
         binding.recyclerViewRepositoryList.adapter = adapter
     }
 
-    override fun ShowUser(userEntity: UserEntity) {
+    override fun showUser(userEntity: UserEntity) {
         binding.userLogin.text = userEntity.login
         binding.userId.text = userEntity.id.toString()
         binding.userAvatar.load(userEntity.avatarUrl)

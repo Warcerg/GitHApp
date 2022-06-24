@@ -15,22 +15,20 @@ class UserDetailsPresenter(private val userDetailsRepo: UserDetailsRepo) :
     private var isLoading: Boolean = false
 
 
-    override fun attach(detailsView: DetailsContract.View, user: UserEntity) {
-        view = detailsView
-        view?.showLoading(isLoading)
-        if (userEntity?.equals(user) == true) {
-            view?.let { restoreDetailsData(it) }
+    override fun attach(view: DetailsContract.View, userEntity: UserEntity) {
+        this.view = view
+        this.view?.showLoading(isLoading)
+        if (this.userEntity?.equals(userEntity) == true) {
+            this.view?.let { restoreDetailsData(it) }
         } else {
-            provideUserData(user)
-            provideUserDetails(user)
-            loadRepoList(user)
-
+            provideUserData(userEntity)
+            provideUserDetails(userEntity)
+            loadRepoList(userEntity)
         }
-
     }
 
     private fun restoreDetailsData(view: DetailsContract.View) {
-        userEntity?.let { view.ShowUser(it) }
+        userEntity?.let { view.showUser(it) }
         userDetails?.let { view.showUserDetails(it) }
         repoList?.let { view.showRepoList(it) }
     }
@@ -40,7 +38,8 @@ class UserDetailsPresenter(private val userDetailsRepo: UserDetailsRepo) :
     }
 
     override fun provideUserData(userEntity: UserEntity) {
-        view?.ShowUser(userEntity)
+        this.userEntity = userEntity
+        view?.showUser(userEntity)
     }
 
     override fun provideUserDetails(userEntity: UserEntity) {
@@ -60,7 +59,6 @@ class UserDetailsPresenter(private val userDetailsRepo: UserDetailsRepo) :
                 view?.showError(it)
             }
         )
-
     }
 
     override fun loadRepoList(userEntity: UserEntity) {

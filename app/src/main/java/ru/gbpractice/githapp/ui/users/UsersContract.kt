@@ -9,13 +9,11 @@ interface UsersContract {
         fun showLoading(isLoading: Boolean)
         fun showError(t: Throwable)
         fun showUserDetails(userEntity: UserEntity)
-
     }
 
     interface Presenter {
         fun attach(view: View)
         fun detach()
-
         fun onRefreshUserList()
         fun onSelectUser(userEntity: UserEntity)
     }

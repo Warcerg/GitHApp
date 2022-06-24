@@ -7,7 +7,7 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import ru.gbpractice.githapp.domain.entities.UserEntity
-import ru.gbpractice.githapp.domain.repos.retrofit.GitHubAPI
+import ru.gbpractice.githapp.data.retrofit.GitHubAPI
 import ru.gbpractice.githapp.domain.repos.UserListRepo
 
 
@@ -20,7 +20,6 @@ class RetrofitUserListRepoImpl : UserListRepo {
             .baseUrl(baseUrl)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
-
         adapter.create(GitHubAPI::class.java)
     }
 
@@ -44,9 +43,7 @@ class RetrofitUserListRepoImpl : UserListRepo {
             override fun onFailure(call: Call<List<UserEntity>>, t: Throwable) {
                 onError?.invoke(t)
             }
-
         })
-
     }
 }
 

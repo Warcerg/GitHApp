@@ -1,6 +1,5 @@
 package ru.gbpractice.githapp.domain.repos
 
-import coil.request.SuccessResult
 import ru.gbpractice.githapp.domain.entities.UserDetailsEntity
 import ru.gbpractice.githapp.domain.entities.UserRepoEntity
 

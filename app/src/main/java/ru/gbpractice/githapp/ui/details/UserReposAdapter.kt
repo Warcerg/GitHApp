@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import ru.gbpractice.githapp.domain.entities.UserRepoEntity
 
-class UserReposAdapter: RecyclerView.Adapter<UserRepoViewHolder>() {
+class UserReposAdapter : RecyclerView.Adapter<UserRepoViewHolder>() {
     private val data = mutableListOf<UserRepoEntity>()
 
     init {
@@ -13,7 +13,6 @@ class UserReposAdapter: RecyclerView.Adapter<UserRepoViewHolder>() {
     }
 
     override fun getItemId(position: Int) = getItem(position).id
-
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserRepoViewHolder {
         return UserRepoViewHolder(parent)
@@ -30,7 +29,7 @@ class UserReposAdapter: RecyclerView.Adapter<UserRepoViewHolder>() {
     private fun getItem(pos: Int) = data[pos]
 
     @SuppressLint("NotifyDataSetChanged")
-    fun setData(repos: List<UserRepoEntity>){
+    fun setData(repos: List<UserRepoEntity>) {
         data.clear()
         data.addAll(repos)
         notifyDataSetChanged()

@@ -8,10 +8,10 @@ import retrofit2.converter.gson.GsonConverterFactory
 import ru.gbpractice.githapp.domain.entities.UserDetailsEntity
 import ru.gbpractice.githapp.domain.entities.UserRepoEntity
 import ru.gbpractice.githapp.domain.repos.UserDetailsRepo
-import ru.gbpractice.githapp.domain.repos.retrofit.GitHubAPI
+import ru.gbpractice.githapp.data.retrofit.GitHubAPI
 
 
-class RetrofitUserDetailsRepoImpl: UserDetailsRepo {
+class RetrofitUserDetailsRepoImpl : UserDetailsRepo {
 
     private val baseUrl = "https://api.github.com/"
 
@@ -20,7 +20,6 @@ class RetrofitUserDetailsRepoImpl: UserDetailsRepo {
             .baseUrl(baseUrl)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
-
         adapter.create(GitHubAPI::class.java)
     }
 
@@ -35,17 +34,15 @@ class RetrofitUserDetailsRepoImpl: UserDetailsRepo {
                 response: Response<UserDetailsEntity>
             ) {
                 val body = response.body()
-                if (response.isSuccessful && body != null){
+                if (response.isSuccessful && body != null) {
                     onSuccess.invoke(body)
                 } else {
                     onError?.invoke(IllegalStateException("Error or no USER_DETAILS data available"))
                 }
             }
-
             override fun onFailure(call: Call<UserDetailsEntity>, t: Throwable) {
                 onError?.invoke(t)
             }
-
         })
     }
 
@@ -60,17 +57,15 @@ class RetrofitUserDetailsRepoImpl: UserDetailsRepo {
                 response: Response<List<UserRepoEntity>>
             ) {
                 val body = response.body()
-                if (response.isSuccessful && body != null){
+                if (response.isSuccessful && body != null) {
                     onSuccess.invoke(body)
                 } else {
                     onError?.invoke(java.lang.IllegalStateException("Error or no USER_REPOSITORIES data available"))
                 }
             }
-
             override fun onFailure(call: Call<List<UserRepoEntity>>, t: Throwable) {
                 onError?.invoke(t)
             }
-
         })
     }
 }
