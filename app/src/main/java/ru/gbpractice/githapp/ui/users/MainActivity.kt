@@ -32,7 +32,7 @@ class MainActivity : AppCompatActivity(), UsersContract.View {
 
     private fun retainPresenter(): UsersContract.Presenter {
         return lastCustomNonConfigurationInstance as? UsersContract.Presenter
-            ?: app.userListPresenter
+            ?: UsersPresenter(app.userListRepo)
     }
 
     override fun onRetainCustomNonConfigurationInstance(): UsersContract.Presenter {

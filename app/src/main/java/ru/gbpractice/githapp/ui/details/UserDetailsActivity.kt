@@ -37,7 +37,7 @@ class UserDetailsActivity : AppCompatActivity(), DetailsContract.View {
 
     private fun retainPresenter(): DetailsContract.Presenter {
         return lastCustomNonConfigurationInstance as? DetailsContract.Presenter
-            ?: app.userDetailsPresenter
+            ?: UserDetailsPresenter(app.userDetailsRepo)
     }
 
     override fun onDestroy() {
