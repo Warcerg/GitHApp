@@ -14,34 +14,38 @@ import ru.gbpractice.githapp.domain.entities.UserEntity
 import ru.gbpractice.githapp.ui.details.UserDetailsActivity
 
 
-class MainActivity : AppCompatActivity(), UsersContract.View {
+class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private val adapter = UsersAdapter()
-    private lateinit var presenter: UsersContract.Presenter
+    private lateinit var viewModel: UsersContract.ViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
         initViews()
-        presenter = retainPresenter()
-        presenter.attach(this)
+        initViewModel()
 
     }
 
-    private fun retainPresenter(): UsersContract.Presenter {
-        return lastCustomNonConfigurationInstance as? UsersContract.Presenter
-            ?: UsersPresenter(app.userListRepo)
+    private fun initViewModel() {
+        viewModel = getViewModel()
+
+        viewModel.usersLiveData.observe(this) { showUsersList(it) }
+        viewModel.loadingLiveData.observe(this) { showLoading(it) }
+        viewModel.errorLiveData.observe(this) { showError(it) }
+        viewModel.showUserDetailsLiveData.observe(this) { showUserDetails(it) }
     }
 
-    override fun onRetainCustomNonConfigurationInstance(): UsersContract.Presenter {
-        return presenter
+    private fun getViewModel(): UsersContract.ViewModel {
+        return lastCustomNonConfigurationInstance as? UsersContract.ViewModel
+            ?: UsersViewModel(app.userListRepo)
     }
 
-    override fun onDestroy() {
-        presenter.detach()
-        super.onDestroy()
+    override fun onRetainCustomNonConfigurationInstance(): UsersContract.ViewModel {
+        return viewModel
     }
 
     private fun initViews() {
@@ -52,7 +56,7 @@ class MainActivity : AppCompatActivity(), UsersContract.View {
 
     private fun initRefreshButton() {
         binding.buttonRefreshUserList.setOnClickListener {
-            presenter.onRefreshUserList()
+            viewModel.onRefreshUserList()
         }
     }
 
@@ -60,27 +64,26 @@ class MainActivity : AppCompatActivity(), UsersContract.View {
         binding.usersListRecyclerView.layoutManager = LinearLayoutManager(this)
         adapter.setOnUserClickListener(object : UsersAdapter.OnUserClickListener {
             override fun onUserItemClick(userEntity: UserEntity) {
-                presenter.onSelectUser(userEntity)
+                viewModel.onSelectUser(userEntity)
             }
         })
         binding.usersListRecyclerView.adapter = adapter
     }
 
-
-    override fun showUsersList(users: List<UserEntity>) {
+    private fun showUsersList(users: List<UserEntity>) {
         adapter.setData(users)
     }
 
-    override fun showLoading(isLoading: Boolean) {
+    private fun showLoading(isLoading: Boolean) {
         binding.progressBar.isVisible = isLoading
         binding.usersListRecyclerView.isVisible = !isLoading
     }
 
-    override fun showError(t: Throwable) {
+    private fun showError(t: Throwable) {
         Toast.makeText(this, t.message, Toast.LENGTH_LONG).show()
     }
 
-    override fun showUserDetails(userEntity: UserEntity) {
+    private fun showUserDetails(userEntity: UserEntity) {
         val intent = Intent(this, UserDetailsActivity::class.java)
         intent.putExtra(BUNDLE_KEY, UserEntityDTO.fromUserEntity(userEntity))
         startActivity(intent)
