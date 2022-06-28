@@ -8,6 +8,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import ru.gbpractice.githapp.domain.entities.UserEntity
 import ru.gbpractice.githapp.data.retrofit.GitHubAPI
+import ru.gbpractice.githapp.data.retrofit.entitiesDTO.UserEntityDTO
 import ru.gbpractice.githapp.domain.repos.UserListRepo
 
 
@@ -27,23 +28,28 @@ class RetrofitUserListRepoImpl : UserListRepo {
         onSuccess: (List<UserEntity>) -> Unit,
         onError: ((Throwable) -> Unit)?
     ) {
-        gitAPI.getUsersList().enqueue(object : Callback<List<UserEntity>> {
+        gitAPI.getUsersList().enqueue(object : Callback<List<UserEntityDTO>> {
             override fun onResponse(
-                call: Call<List<UserEntity>>,
-                response: Response<List<UserEntity>>
+                call: Call<List<UserEntityDTO>>,
+                response: Response<List<UserEntityDTO>>
             ) {
                 val body = response.body()
                 if (response.isSuccessful && body != null) {
-                    onSuccess.invoke(body)
+                    onSuccess.invoke(body.map {
+                        it.toUserEntity()
+                    })
                 } else {
                     onError?.invoke(IllegalStateException("Error or no data available"))
                 }
             }
 
-            override fun onFailure(call: Call<List<UserEntity>>, t: Throwable) {
+            override fun onFailure(call: Call<List<UserEntityDTO>>, t: Throwable) {
                 onError?.invoke(t)
             }
+
         })
     }
+
+
 }
 

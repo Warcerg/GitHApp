@@ -8,6 +8,7 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import ru.gbpractice.githapp.App.Companion.BUNDLE_KEY
 import ru.gbpractice.githapp.app
+import ru.gbpractice.githapp.data.retrofit.entitiesDTO.UserEntityDTO
 import ru.gbpractice.githapp.databinding.ActivityMainBinding
 import ru.gbpractice.githapp.domain.entities.UserEntity
 import ru.gbpractice.githapp.ui.details.UserDetailsActivity
@@ -81,7 +82,7 @@ class MainActivity : AppCompatActivity(), UsersContract.View {
 
     override fun showUserDetails(userEntity: UserEntity) {
         val intent = Intent(this, UserDetailsActivity::class.java)
-        intent.putExtra(BUNDLE_KEY, userEntity)
+        intent.putExtra(BUNDLE_KEY, UserEntityDTO.fromUserEntity(userEntity))
         startActivity(intent)
     }
 }

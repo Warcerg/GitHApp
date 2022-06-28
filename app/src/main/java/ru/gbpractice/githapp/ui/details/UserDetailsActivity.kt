@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import coil.api.load
 import ru.gbpractice.githapp.App.Companion.BUNDLE_KEY
 import ru.gbpractice.githapp.app
+import ru.gbpractice.githapp.data.retrofit.entitiesDTO.UserEntityDTO
 import ru.gbpractice.githapp.databinding.ActivityUserDetailsBinding
 import ru.gbpractice.githapp.domain.entities.UserDetailsEntity
 import ru.gbpractice.githapp.domain.entities.UserEntity
@@ -26,9 +27,10 @@ class UserDetailsActivity : AppCompatActivity(), DetailsContract.View {
         setContentView(binding.root)
         initViews()
 
-        if (intent != null) {
-            userEntity = intent.getParcelableExtra(BUNDLE_KEY)
+        intent?.let {
+            userEntity = intent.getParcelableExtra<UserEntityDTO>(BUNDLE_KEY)?.toUserEntity()
         }
+
         presenter = retainPresenter()
         presenter.attach(this, userEntity as UserEntity)
     }
