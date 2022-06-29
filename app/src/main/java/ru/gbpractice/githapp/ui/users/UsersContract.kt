@@ -2,6 +2,7 @@ package ru.gbpractice.githapp.ui.users
 
 import androidx.lifecycle.LiveData
 import ru.gbpractice.githapp.domain.entities.UserEntity
+import ru.gbpractice.githapp.utils.SingleLiveDataEvent
 
 interface UsersContract {
 

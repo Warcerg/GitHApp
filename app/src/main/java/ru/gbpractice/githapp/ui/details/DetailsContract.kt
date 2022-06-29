@@ -7,7 +7,7 @@ import ru.gbpractice.githapp.domain.entities.UserRepoEntity
 
 interface DetailsContract {
 
-    interface ViewModel {
+    interface ViewModel{
         val userLiveData: LiveData<UserEntity>
         val userDetailsLiveData: LiveData<UserDetailsEntity>
         val userRepoListLiveData: LiveData<List<UserRepoEntity>>
