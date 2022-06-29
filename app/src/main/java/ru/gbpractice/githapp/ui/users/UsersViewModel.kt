@@ -15,8 +15,6 @@ class UsersViewModel(
     override val showUserDetailsLiveData: LiveData<UserEntity> = MutableLiveData()
 
 
-
-
     override fun onRefreshUserList() {
         loadingLiveData.mutable().postValue(true)
         userListRepo.getUserList(

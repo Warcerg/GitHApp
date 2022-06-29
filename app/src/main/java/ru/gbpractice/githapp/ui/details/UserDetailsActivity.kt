@@ -14,35 +14,38 @@ import ru.gbpractice.githapp.domain.entities.UserDetailsEntity
 import ru.gbpractice.githapp.domain.entities.UserEntity
 import ru.gbpractice.githapp.domain.entities.UserRepoEntity
 
-class UserDetailsActivity : AppCompatActivity(), DetailsContract.View {
+class UserDetailsActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityUserDetailsBinding
     private val adapter = UserReposAdapter()
-    private lateinit var presenter: DetailsContract.Presenter
-    private var userEntity: UserEntity? = null
+    private lateinit var viewModel: DetailsContract.ViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityUserDetailsBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
         initViews()
+        initViewModel()
 
-        intent?.let {
-            userEntity = intent.getParcelableExtra<UserEntityDTO>(BUNDLE_KEY)?.toUserEntity()
+    }
+
+    private fun initViewModel() {
+        viewModel = getViewModel()
+
+        intent.getParcelableExtra<UserEntityDTO>(BUNDLE_KEY)?.toUserEntity()?.let {
+            viewModel.provideUserData(it)
         }
-
-        presenter = retainPresenter()
-        presenter.attach(this, userEntity as UserEntity)
+        viewModel.errorLiveData.observe(this) { showError(it) }
+        viewModel.loadingLiveData.observe(this) { showLoading(it) }
+        viewModel.userLiveData.observe(this) { showUser(it) }
+        viewModel.userDetailsLiveData.observe(this) { showUserDetails(it) }
+        viewModel.userRepoListLiveData.observe(this) { showRepoList(it) }
     }
 
-    private fun retainPresenter(): DetailsContract.Presenter {
-        return lastCustomNonConfigurationInstance as? DetailsContract.Presenter
-            ?: UserDetailsPresenter(app.userDetailsRepo)
-    }
-
-    override fun onDestroy() {
-        presenter.detach()
-        super.onDestroy()
+    private fun getViewModel(): DetailsContract.ViewModel {
+        return lastCustomNonConfigurationInstance as? DetailsContract.ViewModel
+            ?: UserDetailsViewModel(app.userDetailsRepo)
     }
 
     private fun initViews() {
@@ -54,26 +57,26 @@ class UserDetailsActivity : AppCompatActivity(), DetailsContract.View {
         binding.recyclerViewRepositoryList.adapter = adapter
     }
 
-    override fun showUser(userEntity: UserEntity) {
+    private fun showUser(userEntity: UserEntity) {
         binding.userLogin.text = userEntity.login
         binding.userId.text = userEntity.id.toString()
         binding.userAvatar.load(userEntity.avatarUrl)
     }
 
-    override fun showUserDetails(details: UserDetailsEntity) {
+    private fun showUserDetails(details: UserDetailsEntity) {
         binding.userName.text = details.name
     }
 
-    override fun showRepoList(repos: List<UserRepoEntity>) {
+    private fun showRepoList(repos: List<UserRepoEntity>) {
         adapter.setData(repos)
     }
 
-    override fun showLoading(isLoading: Boolean) {
+    private fun showLoading(isLoading: Boolean) {
         binding.progressBar.isVisible = isLoading
         binding.recyclerViewRepositoryList.isVisible = !isLoading
     }
 
-    override fun showError(t: Throwable) {
+    private fun showError(t: Throwable) {
         Toast.makeText(this, t.message, Toast.LENGTH_LONG).show()
     }
 }
