@@ -1,14 +1,12 @@
 package ru.gbpractice.githapp.data
 
 
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import io.reactivex.rxjava3.kotlin.subscribeBy
 import retrofit2.Retrofit
+import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import ru.gbpractice.githapp.domain.entities.UserEntity
 import ru.gbpractice.githapp.data.retrofit.GitHubAPI
-import ru.gbpractice.githapp.data.retrofit.entitiesDTO.UserEntityDTO
 import ru.gbpractice.githapp.domain.repos.UserListRepo
 
 
@@ -20,6 +18,7 @@ class RetrofitUserListRepoImpl : UserListRepo {
         val adapter = Retrofit.Builder()
             .baseUrl(baseUrl)
             .addConverterFactory(GsonConverterFactory.create())
+            .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
             .build()
         adapter.create(GitHubAPI::class.java)
     }
@@ -28,28 +27,15 @@ class RetrofitUserListRepoImpl : UserListRepo {
         onSuccess: (List<UserEntity>) -> Unit,
         onError: ((Throwable) -> Unit)?
     ) {
-        gitAPI.getUsersList().enqueue(object : Callback<List<UserEntityDTO>> {
-            override fun onResponse(
-                call: Call<List<UserEntityDTO>>,
-                response: Response<List<UserEntityDTO>>
-            ) {
-                val body = response.body()
-                if (response.isSuccessful && body != null) {
-                    onSuccess.invoke(body.map {
-                        it.toUserEntity()
-                    })
-                } else {
-                    onError?.invoke(IllegalStateException("Error or no data available"))
-                }
+        gitAPI.getUsersList().subscribeBy(
+            onSuccess = { users ->
+                onSuccess.invoke(users.map { it.toUserEntity() })
+            },
+            onError = {
+                onError?.invoke(it)
             }
-
-            override fun onFailure(call: Call<List<UserEntityDTO>>, t: Throwable) {
-                onError?.invoke(t)
-            }
-
-        })
+        )
     }
-
 
 }
 

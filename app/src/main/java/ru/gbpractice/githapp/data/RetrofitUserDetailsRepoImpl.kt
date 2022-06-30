@@ -1,9 +1,8 @@
 package ru.gbpractice.githapp.data
 
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import io.reactivex.rxjava3.kotlin.subscribeBy
 import retrofit2.Retrofit
+import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import ru.gbpractice.githapp.domain.entities.UserDetailsEntity
 import ru.gbpractice.githapp.domain.entities.UserRepoEntity
@@ -19,6 +18,7 @@ class RetrofitUserDetailsRepoImpl : UserDetailsRepo {
         val adapter = Retrofit.Builder()
             .baseUrl(baseUrl)
             .addConverterFactory(GsonConverterFactory.create())
+            .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
             .build()
         adapter.create(GitHubAPI::class.java)
     }
@@ -28,22 +28,14 @@ class RetrofitUserDetailsRepoImpl : UserDetailsRepo {
         onSuccess: (UserDetailsEntity) -> Unit,
         onError: ((Throwable) -> Unit)?
     ) {
-        gitAPI.getUserInfo(login).enqueue(object : Callback<UserDetailsEntity> {
-            override fun onResponse(
-                call: Call<UserDetailsEntity>,
-                response: Response<UserDetailsEntity>
-            ) {
-                val body = response.body()
-                if (response.isSuccessful && body != null) {
-                    onSuccess.invoke(body)
-                } else {
-                    onError?.invoke(IllegalStateException("Error or no USER_DETAILS data available"))
-                }
+        gitAPI.getUserInfo(login).subscribeBy(
+            onSuccess = {
+                onSuccess.invoke(it)
+            },
+            onError = {
+                onError?.invoke(it)
             }
-            override fun onFailure(call: Call<UserDetailsEntity>, t: Throwable) {
-                onError?.invoke(t)
-            }
-        })
+        )
     }
 
     override fun getUserRepoList(
@@ -51,21 +43,13 @@ class RetrofitUserDetailsRepoImpl : UserDetailsRepo {
         onSuccess: (List<UserRepoEntity>) -> Unit,
         onError: ((Throwable) -> Unit)?
     ) {
-        gitAPI.getUserRepoList(login).enqueue(object : Callback<List<UserRepoEntity>> {
-            override fun onResponse(
-                call: Call<List<UserRepoEntity>>,
-                response: Response<List<UserRepoEntity>>
-            ) {
-                val body = response.body()
-                if (response.isSuccessful && body != null) {
-                    onSuccess.invoke(body)
-                } else {
-                    onError?.invoke(java.lang.IllegalStateException("Error or no USER_REPOSITORIES data available"))
-                }
+        gitAPI.getUserRepoList(login).subscribeBy(
+            onSuccess = {
+                onSuccess.invoke(it)
+            },
+            onError = {
+                onError?.invoke(it)
             }
-            override fun onFailure(call: Call<List<UserRepoEntity>>, t: Throwable) {
-                onError?.invoke(t)
-            }
-        })
+        )
     }
 }

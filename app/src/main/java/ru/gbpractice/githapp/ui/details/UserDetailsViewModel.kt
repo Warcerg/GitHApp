@@ -26,15 +26,12 @@ class UserDetailsViewModel(
     }
 
     private fun provideUserDetails(userEntity: UserEntity) {
-        loadingLiveData.mutable().postValue(true)
         userDetailsRepo.getUserDetails(
             userEntity.login,
             onSuccess = {
-                loadingLiveData.mutable().postValue(false)
                 userDetailsLiveData.mutable().postValue(it)
             },
             onError = {
-                loadingLiveData.mutable().postValue(false)
                 errorLiveData.mutable().postValue(it)
             }
         )
