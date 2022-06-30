@@ -1,41 +1,46 @@
 package ru.gbpractice.githapp.ui.users
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.kotlin.subscribeBy
+import io.reactivex.rxjava3.subjects.BehaviorSubject
+import io.reactivex.rxjava3.subjects.Subject
 import ru.gbpractice.githapp.domain.entities.UserEntity
 import ru.gbpractice.githapp.domain.repos.UserListRepo
-import ru.gbpractice.githapp.utils.SingleLiveDataEvent
 
 class UsersViewModel(
     private val userListRepo: UserListRepo
-    ) : UsersContract.ViewModel {
+) : UsersContract.ViewModel {
 
-    override val usersLiveData: LiveData<List<UserEntity>> = MutableLiveData()
-    override val errorLiveData: LiveData<Throwable> = SingleLiveDataEvent()
-    override val loadingLiveData: LiveData<Boolean> = MutableLiveData()
-    override val showUserDetailsLiveData: LiveData<UserEntity> = SingleLiveDataEvent()
+    override val usersLiveData: Observable<List<UserEntity>> = BehaviorSubject.create()
+    override val errorLiveData: Observable<Throwable> = BehaviorSubject.create()
+    override val loadingLiveData: Observable<Boolean> = BehaviorSubject.create()
+    override val showUserDetailsLiveData: Observable<UserEntity> = BehaviorSubject.create()
 
 
     override fun onRefreshUserList() {
-        loadingLiveData.mutable().postValue(true)
-        userListRepo.getUserList(
+        loadingLiveData.mutable().onNext(true)
+        userListRepo.getUserList()
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy(
             onSuccess = {
-                loadingLiveData.mutable().postValue(false)
-                usersLiveData.mutable().postValue(it)
+                loadingLiveData.mutable().onNext(false)
+                usersLiveData.mutable().onNext(it)
+
             },
             onError = {
-                loadingLiveData.mutable().postValue(false)
-                errorLiveData.mutable().postValue(it)
+                loadingLiveData.mutable().onNext(false)
+                errorLiveData.mutable().onNext(it)
             }
         )
     }
 
     override fun onSelectUser(userEntity: UserEntity) {
-        showUserDetailsLiveData.mutable().postValue(userEntity)
+        showUserDetailsLiveData.mutable().onNext(userEntity)
     }
 
-    private fun <T> LiveData<T>.mutable(): MutableLiveData<T> {
-        return this as? MutableLiveData<T>
+    private fun <T : Any> Observable<T>.mutable(): Subject<T> {
+        return this as? Subject<T>
             ?: throw IllegalStateException("It is not mutableLiveData")
     }
 }

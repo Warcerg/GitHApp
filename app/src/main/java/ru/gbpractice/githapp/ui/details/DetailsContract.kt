@@ -1,6 +1,6 @@
 package ru.gbpractice.githapp.ui.details
 
-import androidx.lifecycle.LiveData
+import io.reactivex.rxjava3.core.Observable
 import ru.gbpractice.githapp.domain.entities.UserDetailsEntity
 import ru.gbpractice.githapp.domain.entities.UserEntity
 import ru.gbpractice.githapp.domain.entities.UserRepoEntity
@@ -8,11 +8,11 @@ import ru.gbpractice.githapp.domain.entities.UserRepoEntity
 interface DetailsContract {
 
     interface ViewModel{
-        val userLiveData: LiveData<UserEntity>
-        val userDetailsLiveData: LiveData<UserDetailsEntity>
-        val userRepoListLiveData: LiveData<List<UserRepoEntity>>
-        val errorLiveData: LiveData<Throwable>
-        val loadingLiveData: LiveData<Boolean>
+        val userLiveData: Observable<UserEntity>
+        val userDetailsLiveData: Observable<UserDetailsEntity>
+        val userRepoListLiveData: Observable<List<UserRepoEntity>>
+        val errorLiveData: Observable<Throwable>
+        val loadingLiveData: Observable<Boolean>
 
         fun provideUserData(userEntity: UserEntity)
     }

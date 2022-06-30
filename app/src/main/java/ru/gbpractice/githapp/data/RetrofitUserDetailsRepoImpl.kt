@@ -1,13 +1,13 @@
 package ru.gbpractice.githapp.data
 
-import io.reactivex.rxjava3.kotlin.subscribeBy
+import io.reactivex.rxjava3.core.Single
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
+import ru.gbpractice.githapp.data.retrofit.GitHubAPI
 import ru.gbpractice.githapp.domain.entities.UserDetailsEntity
 import ru.gbpractice.githapp.domain.entities.UserRepoEntity
 import ru.gbpractice.githapp.domain.repos.UserDetailsRepo
-import ru.gbpractice.githapp.data.retrofit.GitHubAPI
 
 
 class RetrofitUserDetailsRepoImpl : UserDetailsRepo {
@@ -23,33 +23,9 @@ class RetrofitUserDetailsRepoImpl : UserDetailsRepo {
         adapter.create(GitHubAPI::class.java)
     }
 
-    override fun getUserDetails(
-        login: String,
-        onSuccess: (UserDetailsEntity) -> Unit,
-        onError: ((Throwable) -> Unit)?
-    ) {
-        gitAPI.getUserInfo(login).subscribeBy(
-            onSuccess = {
-                onSuccess.invoke(it)
-            },
-            onError = {
-                onError?.invoke(it)
-            }
-        )
-    }
 
-    override fun getUserRepoList(
-        login: String,
-        onSuccess: (List<UserRepoEntity>) -> Unit,
-        onError: ((Throwable) -> Unit)?
-    ) {
-        gitAPI.getUserRepoList(login).subscribeBy(
-            onSuccess = {
-                onSuccess.invoke(it)
-            },
-            onError = {
-                onError?.invoke(it)
-            }
-        )
-    }
+    override fun getUserDetails(login: String): Single<UserDetailsEntity> = gitAPI.getUserInfo(login)
+
+    override fun getUserRepoList(login: String): Single<List<UserRepoEntity>> = gitAPI.getUserRepoList(login)
+
 }

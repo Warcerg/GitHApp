@@ -1,12 +1,12 @@
 package ru.gbpractice.githapp.data
 
 
-import io.reactivex.rxjava3.kotlin.subscribeBy
+import io.reactivex.rxjava3.core.Single
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
-import ru.gbpractice.githapp.domain.entities.UserEntity
 import ru.gbpractice.githapp.data.retrofit.GitHubAPI
+import ru.gbpractice.githapp.domain.entities.UserEntity
 import ru.gbpractice.githapp.domain.repos.UserListRepo
 
 
@@ -23,19 +23,12 @@ class RetrofitUserListRepoImpl : UserListRepo {
         adapter.create(GitHubAPI::class.java)
     }
 
-    override fun getUserList(
-        onSuccess: (List<UserEntity>) -> Unit,
-        onError: ((Throwable) -> Unit)?
-    ) {
-        gitAPI.getUsersList().subscribeBy(
-            onSuccess = { users ->
-                onSuccess.invoke(users.map { it.toUserEntity() })
-            },
-            onError = {
-                onError?.invoke(it)
+    override fun getUserList(): Single<List<UserEntity>> = gitAPI.getUsersList()
+        .map { users ->
+            users.map {
+                it.toUserEntity()
             }
-        )
-    }
+        }
 
 }
 

@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import coil.api.load
+import io.reactivex.rxjava3.disposables.CompositeDisposable
 import ru.gbpractice.githapp.App.Companion.BUNDLE_KEY
 import ru.gbpractice.githapp.app
 import ru.gbpractice.githapp.data.retrofit.entitiesDTO.UserEntityDTO
@@ -19,6 +20,8 @@ class UserDetailsActivity : AppCompatActivity() {
     private lateinit var binding: ActivityUserDetailsBinding
     private val adapter = UserReposAdapter()
     private lateinit var viewModel: DetailsContract.ViewModel
+
+    private val viewModelDisposable = CompositeDisposable()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,11 +39,20 @@ class UserDetailsActivity : AppCompatActivity() {
         intent.getParcelableExtra<UserEntityDTO>(BUNDLE_KEY)?.toUserEntity()?.let {
             viewModel.provideUserData(it)
         }
-        viewModel.errorLiveData.observe(this) { showError(it) }
-        viewModel.loadingLiveData.observe(this) { showLoading(it) }
-        viewModel.userLiveData.observe(this) { showUser(it) }
-        viewModel.userDetailsLiveData.observe(this) { showUserDetails(it) }
-        viewModel.userRepoListLiveData.observe(this) { showRepoList(it) }
+
+        viewModelDisposable.addAll(
+            viewModel.errorLiveData.subscribe { showError(it) },
+            viewModel.loadingLiveData.subscribe { showLoading(it) },
+            viewModel.userLiveData.subscribe { showUser(it) },
+            viewModel.userDetailsLiveData.subscribe { showUserDetails(it) },
+            viewModel.userRepoListLiveData.subscribe { showRepoList(it) }
+        )
+
+    }
+
+    override fun onDestroy() {
+        viewModelDisposable.dispose()
+        super.onDestroy()
     }
 
     private fun getViewModel(): DetailsContract.ViewModel {

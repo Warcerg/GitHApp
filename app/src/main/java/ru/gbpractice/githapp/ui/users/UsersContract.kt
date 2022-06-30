@@ -1,16 +1,15 @@
 package ru.gbpractice.githapp.ui.users
 
-import androidx.lifecycle.LiveData
+import io.reactivex.rxjava3.core.Observable
 import ru.gbpractice.githapp.domain.entities.UserEntity
-import ru.gbpractice.githapp.utils.SingleLiveDataEvent
 
 interface UsersContract {
 
     interface ViewModel {
-        val usersLiveData: LiveData<List<UserEntity>>
-        val errorLiveData: LiveData<Throwable>
-        val loadingLiveData: LiveData<Boolean>
-        val showUserDetailsLiveData: LiveData<UserEntity>
+        val usersLiveData: Observable<List<UserEntity>>
+        val errorLiveData: Observable<Throwable>
+        val loadingLiveData: Observable<Boolean>
+        val showUserDetailsLiveData: Observable<UserEntity>
 
         fun onRefreshUserList()
         fun onSelectUser(userEntity: UserEntity)

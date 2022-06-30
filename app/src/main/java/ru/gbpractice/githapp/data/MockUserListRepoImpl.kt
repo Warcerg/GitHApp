@@ -1,7 +1,6 @@
 package ru.gbpractice.githapp.data
 
-import android.os.Handler
-import android.os.Looper
+import io.reactivex.rxjava3.core.Single
 import ru.gbpractice.githapp.domain.entities.UserEntity
 import ru.gbpractice.githapp.domain.repos.UserListRepo
 
@@ -17,12 +16,5 @@ class MockUserListRepoImpl : UserListRepo {
         UserEntity("ezmobius", 5, "https://avatars.githubusercontent.com/u/5?v=4")
     )
 
-    override fun getUserList(
-        onSuccess: (List<UserEntity>) -> Unit,
-        onError: ((Throwable) -> Unit)?
-    ) {
-        Handler(Looper.getMainLooper()).postDelayed({
-            onSuccess(data)
-        }, DATA_FAKE_LOAD_DELAY)
-    }
+    override fun getUserList(): Single<List<UserEntity>> = Single.just(data)
 }

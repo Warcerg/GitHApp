@@ -6,6 +6,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
+import io.reactivex.rxjava3.disposables.CompositeDisposable
 import ru.gbpractice.githapp.App.Companion.BUNDLE_KEY
 import ru.gbpractice.githapp.app
 import ru.gbpractice.githapp.data.retrofit.entitiesDTO.UserEntityDTO
@@ -20,6 +21,8 @@ class MainActivity : AppCompatActivity() {
     private val adapter = UsersAdapter()
     private lateinit var viewModel: UsersContract.ViewModel
 
+    private val viewModelDisposable = CompositeDisposable()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -33,10 +36,17 @@ class MainActivity : AppCompatActivity() {
     private fun initViewModel() {
         viewModel = getViewModel()
 
-        viewModel.usersLiveData.observe(this) { showUsersList(it) }
-        viewModel.loadingLiveData.observe(this) { showLoading(it) }
-        viewModel.errorLiveData.observe(this) { showError(it) }
-        viewModel.showUserDetailsLiveData.observe(this) { showUserDetails(it) }
+        viewModelDisposable.addAll(
+        viewModel.usersLiveData.subscribe { showUsersList(it) },
+        viewModel.loadingLiveData.subscribe { showLoading(it) },
+        viewModel.errorLiveData.subscribe { showError(it) },
+        viewModel.showUserDetailsLiveData.subscribe { showUserDetails(it) }
+        )
+    }
+
+    override fun onDestroy() {
+        viewModelDisposable.dispose()
+        super.onDestroy()
     }
 
     private fun getViewModel(): UsersContract.ViewModel {
