@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">GitHApp</string>
+    <string name="refresh_user_list">Refresh user list</string>
+    <string name="gith_app">GitH App</string>
+    <string name="user_login">user_login</string>
+    <string name="user_id">user_id</string>
+    <string name="user_full_name">user_full_name</string>
+    <string name="repository_name">repository_name</string>
+    <string name="repository_description">repository_description</string>
+    <string name="repo_language">language</string>
 </resources>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="user_list_layout_margin">5dp</dimen>
+    <dimen name="user_list_elements_margin">2dp</dimen>
+    <dimen name="header_text_size">25sp</dimen>
+    <dimen name="progress_bar_size">100dp</dimen>
+    <dimen name="user_view_holder_avatar_size">64dp</dimen>
+    <dimen name="user_view_holder_login_text_size">28sp</dimen>
+    <dimen name="user_view_holder_uid_text_size">16sp</dimen>
+</resources>

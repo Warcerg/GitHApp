@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:animateLayoutChanges="false"
+    app:cardCornerRadius="6dp"
+    app:cardElevation="6dp"
+    android:layout_marginTop="3dp"
+    android:layout_marginStart="3dp"
+    android:layout_marginEnd="3dp"
+    android:layout_marginBottom="3dp"
+    android:background="#f5f5f5"
+    >
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/folder"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:scaleType="fitCenter"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="5dp"
+        app:srcCompat="@drawable/ic_baseline_folder_24" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/repository_name"
+        android:layout_width="wrap_content"
+        android:layout_height="25dp"
+        app:layout_constraintStart_toEndOf="@id/folder"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="15dp"
+        android:text="@string/repository_name"
+        android:textSize="18sp" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/repository_description"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@id/repository_name"
+        app:layout_constraintTop_toBottomOf="@id/repository_name"
+        app:layout_constraintEnd_toEndOf="@id/barrier"
+        android:layout_marginStart="35dp"
+        android:layout_marginTop="5dp"
+        android:text="@string/repository_description"
+        android:textSize="12sp" />
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/barrier"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="start"
+        app:constraint_referenced_ids="repository_language" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/repository_language"
+        android:layout_width="70dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/barrier"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginTop="5dp"
+        android:text="@string/repo_language"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        android:textColor="#6e5494"/>
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/user_list_layout_margin"
+    android:background="@color/primary_indigo_dark"
+    android:orientation="horizontal">
+
+    <ImageView
+        android:id="@+id/avatar_image_view"
+        android:layout_width="@dimen/user_view_holder_avatar_size"
+        android:layout_height="@dimen/user_view_holder_avatar_size"
+        android:layout_margin="@dimen/user_list_elements_margin"
+        android:background="@color/secondary_yellow"
+        android:padding="2dp"
+        app:srcCompat="@drawable/ic_baseline_person_24" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/user_list_elements_margin"
+        android:layout_marginBottom="@dimen/user_list_elements_margin"
+        android:orientation="vertical"
+        android:padding="3dp">
+
+        <TextView
+            android:id="@+id/login_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/user_login"
+            android:textColor="@color/secondary_yellow_dark"
+            android:textSize="@dimen/user_view_holder_login_text_size"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/uid_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/user_id"
+            android:textColor="@color/secondary_yellow"
+            android:textSize="@dimen/user_view_holder_uid_text_size" />
+
+    </LinearLayout>
+
+</LinearLayout>
