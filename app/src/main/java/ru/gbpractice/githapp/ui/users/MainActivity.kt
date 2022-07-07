@@ -37,10 +37,11 @@ class MainActivity : AppCompatActivity() {
         viewModel = getViewModel()
 
         viewModelDisposable.addAll(
-        viewModel.usersLiveData.subscribe { showUsersList(it) },
-        viewModel.loadingLiveData.subscribe { showLoading(it) },
-        viewModel.errorLiveData.subscribe { showError(it) },
-        viewModel.showUserDetailsLiveData.subscribe { showUserDetails(it) }
+            binding.buttonRefreshUserList.buttonClickObservable().subscribe {viewModel.onRefreshUserList()},
+            viewModel.usersLiveData.subscribe { showUsersList(it) },
+            viewModel.loadingLiveData.subscribe { showLoading(it) },
+            viewModel.errorLiveData.subscribe { showError(it) },
+            viewModel.showUserDetailsLiveData.subscribe { showUserDetails(it) }
         )
     }
 
@@ -60,14 +61,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun initViews() {
         showLoading(false)
-        initRefreshButton()
         initRecyclerView()
-    }
-
-    private fun initRefreshButton() {
-        binding.buttonRefreshUserList.setOnClickListener {
-            viewModel.onRefreshUserList()
-        }
     }
 
     private fun initRecyclerView() {
