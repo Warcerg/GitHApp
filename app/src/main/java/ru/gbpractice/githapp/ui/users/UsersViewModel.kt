@@ -1,5 +1,6 @@
 package ru.gbpractice.githapp.ui.users
 
+import androidx.lifecycle.ViewModel
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.kotlin.subscribeBy
@@ -10,7 +11,7 @@ import ru.gbpractice.githapp.domain.repos.UserListRepo
 
 class UsersViewModel(
     private val userListRepo: UserListRepo
-) : UsersContract.ViewModel {
+) : UsersContract.ViewModel, ViewModel() {
 
     override val usersLiveData: Observable<List<UserEntity>> = BehaviorSubject.create()
     override val errorLiveData: Observable<Throwable> = BehaviorSubject.create()

@@ -7,13 +7,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import io.reactivex.rxjava3.disposables.CompositeDisposable
-import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.gbpractice.githapp.App.Companion.BUNDLE_KEY
-import ru.gbpractice.githapp.app
 import ru.gbpractice.githapp.data.retrofit.entitiesDTO.UserEntityDTO
 import ru.gbpractice.githapp.databinding.ActivityMainBinding
 import ru.gbpractice.githapp.domain.entities.UserEntity
-import ru.gbpractice.githapp.domain.repos.UserListRepo
 import ru.gbpractice.githapp.ui.details.UserDetailsActivity
 
 
@@ -21,9 +19,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private val adapter = UsersAdapter()
-    private lateinit var viewModel: UsersContract.ViewModel
-
-    private val userListRepo: UserListRepo by inject()
+    private val viewModel: UsersViewModel by viewModel()
 
     private val viewModelDisposable = CompositeDisposable()
 
@@ -38,7 +34,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initViewModel() {
-        viewModel = getViewModel()
 
         viewModelDisposable.addAll(
             binding.buttonRefreshUserList.buttonClickObservable().subscribe {viewModel.onRefreshUserList()},
@@ -52,11 +47,6 @@ class MainActivity : AppCompatActivity() {
     override fun onDestroy() {
         viewModelDisposable.dispose()
         super.onDestroy()
-    }
-
-    private fun getViewModel(): UsersContract.ViewModel {
-        return lastCustomNonConfigurationInstance as? UsersContract.ViewModel
-            ?: UsersViewModel(userListRepo)
     }
 
     override fun onRetainCustomNonConfigurationInstance(): UsersContract.ViewModel {
