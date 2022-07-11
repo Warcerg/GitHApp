@@ -14,12 +14,15 @@ import ru.gbpractice.githapp.databinding.ActivityUserDetailsBinding
 import ru.gbpractice.githapp.domain.entities.UserDetailsEntity
 import ru.gbpractice.githapp.domain.entities.UserEntity
 import ru.gbpractice.githapp.domain.entities.UserRepoEntity
+import ru.gbpractice.githapp.domain.repos.UserDetailsRepo
 
 class UserDetailsActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityUserDetailsBinding
     private val adapter = UserReposAdapter()
     private lateinit var viewModel: DetailsContract.ViewModel
+
+    private val userDetailsRepo: UserDetailsRepo by lazy { app.userDetailsRepo }
 
     private val viewModelDisposable = CompositeDisposable()
 
@@ -57,7 +60,7 @@ class UserDetailsActivity : AppCompatActivity() {
 
     private fun getViewModel(): DetailsContract.ViewModel {
         return lastCustomNonConfigurationInstance as? DetailsContract.ViewModel
-            ?: UserDetailsViewModel(app.userDetailsRepo)
+            ?: UserDetailsViewModel(userDetailsRepo)
     }
 
     private fun initViews() {
