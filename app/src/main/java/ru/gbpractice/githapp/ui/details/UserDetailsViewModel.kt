@@ -1,5 +1,6 @@
 package ru.gbpractice.githapp.ui.details
 
+import androidx.lifecycle.ViewModel
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.kotlin.subscribeBy
@@ -12,7 +13,7 @@ import ru.gbpractice.githapp.domain.repos.UserDetailsRepo
 
 class UserDetailsViewModel(
     private val userDetailsRepo: UserDetailsRepo
-) : DetailsContract.ViewModel {
+) : DetailsContract.ViewModel, ViewModel() {
 
     override val userLiveData: Observable<UserEntity> = BehaviorSubject.create()
     override val userDetailsLiveData: Observable<UserDetailsEntity> = BehaviorSubject.create()

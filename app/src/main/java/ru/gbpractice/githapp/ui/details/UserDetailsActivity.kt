@@ -7,8 +7,8 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import coil.api.load
 import io.reactivex.rxjava3.disposables.CompositeDisposable
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.gbpractice.githapp.App.Companion.BUNDLE_KEY
-import ru.gbpractice.githapp.app
 import ru.gbpractice.githapp.data.retrofit.entitiesDTO.UserEntityDTO
 import ru.gbpractice.githapp.databinding.ActivityUserDetailsBinding
 import ru.gbpractice.githapp.domain.entities.UserDetailsEntity
@@ -19,7 +19,7 @@ class UserDetailsActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityUserDetailsBinding
     private val adapter = UserReposAdapter()
-    private lateinit var viewModel: DetailsContract.ViewModel
+    private val viewModel: UserDetailsViewModel by viewModel()
 
     private val viewModelDisposable = CompositeDisposable()
 
@@ -34,7 +34,6 @@ class UserDetailsActivity : AppCompatActivity() {
     }
 
     private fun initViewModel() {
-        viewModel = getViewModel()
 
         intent.getParcelableExtra<UserEntityDTO>(BUNDLE_KEY)?.toUserEntity()?.let {
             viewModel.provideUserData(it)
@@ -53,11 +52,6 @@ class UserDetailsActivity : AppCompatActivity() {
     override fun onDestroy() {
         viewModelDisposable.dispose()
         super.onDestroy()
-    }
-
-    private fun getViewModel(): DetailsContract.ViewModel {
-        return lastCustomNonConfigurationInstance as? DetailsContract.ViewModel
-            ?: UserDetailsViewModel(app.userDetailsRepo)
     }
 
     private fun initViews() {
