@@ -1,8 +1,7 @@
 package ru.gbpractice.githapp.di
 
-import org.koin.androidx.viewmodel.dsl.viewModel
-import org.koin.core.qualifier.named
-import org.koin.dsl.module
+import dagger.Module
+import dagger.Provides
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
@@ -11,25 +10,38 @@ import ru.gbpractice.githapp.data.RetrofitUserListRepoImpl
 import ru.gbpractice.githapp.data.retrofit.GitHubAPI
 import ru.gbpractice.githapp.domain.repos.UserDetailsRepo
 import ru.gbpractice.githapp.domain.repos.UserListRepo
-import ru.gbpractice.githapp.ui.details.UserDetailsViewModel
-import ru.gbpractice.githapp.ui.users.UsersViewModel
 
-val appModule = module {
-    single(named("url")) { "https://api.github.com/" }
+@Module
+class AppModule {
 
-    single<GitHubAPI> {
+    @Provides
+    fun provideBaseURL(): String {
+        return "https://api.github.com/"
+    }
+
+    @Provides
+    fun provideRetrofit(baseUrl: String): GitHubAPI {
         val adapter = Retrofit.Builder()
-            .baseUrl(get<String>(named("url")))
+            .baseUrl(baseUrl)
             .addConverterFactory(GsonConverterFactory.create())
             .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
             .build()
-        adapter.create(GitHubAPI::class.java)
+        return adapter.create(GitHubAPI::class.java)
     }
 
-    single<UserListRepo> { RetrofitUserListRepoImpl(get()) }
-    single<UserDetailsRepo> { RetrofitUserDetailsRepoImpl(get()) }
+    @Provides
+    fun provideUserListRepo(
+        api: GitHubAPI
+    ): UserListRepo {
+        return RetrofitUserListRepoImpl(api)
+    }
 
-    viewModel { UsersViewModel(get())}
-    viewModel { UserDetailsViewModel(get())}
+    @Provides
+    fun provideUserDetailsRepo(
+        api: GitHubAPI
+    ): UserDetailsRepo {
+        return RetrofitUserDetailsRepoImpl(api)
+    }
+
 }
 
