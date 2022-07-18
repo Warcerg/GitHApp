@@ -1,6 +1,7 @@
 package ru.gbpractice.githapp.ui.users
 
 import androidx.lifecycle.ViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.kotlin.subscribeBy
@@ -8,8 +9,10 @@ import io.reactivex.rxjava3.subjects.BehaviorSubject
 import io.reactivex.rxjava3.subjects.Subject
 import ru.gbpractice.githapp.domain.entities.UserEntity
 import ru.gbpractice.githapp.domain.repos.UserListRepo
+import javax.inject.Inject
 
-class UsersViewModel(
+@HiltViewModel
+class UsersViewModel @Inject constructor(
     private val userListRepo: UserListRepo
 ) : UsersContract.ViewModel, ViewModel() {
 

@@ -5,9 +5,10 @@ import io.reactivex.rxjava3.core.Single
 import ru.gbpractice.githapp.data.retrofit.GitHubAPI
 import ru.gbpractice.githapp.domain.entities.UserEntity
 import ru.gbpractice.githapp.domain.repos.UserListRepo
+import javax.inject.Inject
 
 
-class RetrofitUserListRepoImpl(
+class RetrofitUserListRepoImpl @Inject constructor(
     private val gitAPI: GitHubAPI
 ) : UserListRepo {
 

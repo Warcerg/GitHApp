@@ -2,12 +2,10 @@ package ru.gbpractice.githapp
 
 import android.app.Application
 import android.content.Context
-import ru.gbpractice.githapp.di.DaggerAppComponent
+import dagger.hilt.android.HiltAndroidApp
 
-
+@HiltAndroidApp
 class App : Application() {
-
-    val appComponent = DaggerAppComponent.create()
 
     companion object {
         const val BUNDLE_KEY = "login"
