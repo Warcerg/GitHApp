@@ -35,7 +35,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initViewModel() {
-        /*viewModel = getViewModel()*/
 
         viewModelDisposable.addAll(
             binding.buttonRefreshUserList.buttonClickObservable().subscribe {viewModel.onRefreshUserList()},
@@ -45,11 +44,6 @@ class MainActivity : AppCompatActivity() {
             viewModel.showUserDetailsLiveData.subscribe { showUserDetails(it) }
         )
     }
-
-/*    private fun getViewModel(): UsersContract.ViewModel {
-        return lastCustomNonConfigurationInstance as? UsersContract.ViewModel
-            ?: UsersViewModel(app.appComponent.getUserListRepo())
-    }*/
 
     override fun onDestroy() {
         viewModelDisposable.dispose()

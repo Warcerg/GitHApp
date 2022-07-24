@@ -36,7 +36,6 @@ class UserDetailsActivity : AppCompatActivity() {
     }
 
     private fun initViewModel() {
-       /* viewModel = getViewModel()*/
 
         intent.getParcelableExtra<UserEntityDTO>(BUNDLE_KEY)?.toUserEntity()?.let {
             viewModel.provideUserData(it)
@@ -51,11 +50,6 @@ class UserDetailsActivity : AppCompatActivity() {
         )
 
     }
-
- /*   private fun getViewModel(): DetailsContract.ViewModel {
-        return lastCustomNonConfigurationInstance as? DetailsContract.ViewModel
-            ?: UserDetailsViewModel(app.appComponent.getUserDetailsRepo())
-    }*/
 
     override fun onDestroy() {
         viewModelDisposable.dispose()
