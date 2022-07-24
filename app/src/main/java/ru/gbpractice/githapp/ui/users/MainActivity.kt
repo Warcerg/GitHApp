@@ -3,24 +3,27 @@ package ru.gbpractice.githapp.ui.users
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
-import dagger.hilt.android.AndroidEntryPoint
+
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import ru.gbpractice.githapp.App.Companion.BUNDLE_KEY
+import ru.gbpractice.githapp.app
 import ru.gbpractice.githapp.data.retrofit.entitiesDTO.UserEntityDTO
 import ru.gbpractice.githapp.databinding.ActivityMainBinding
 import ru.gbpractice.githapp.domain.entities.UserEntity
+import ru.gbpractice.githapp.domain.repos.UserListRepo
 import ru.gbpractice.githapp.ui.details.UserDetailsActivity
 
-@AndroidEntryPoint
+
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private val adapter = UsersAdapter()
-    private val viewModel: UsersViewModel by viewModels()
+    private lateinit var viewModel: UsersContract.ViewModel
+
+    private val userListRepo: UserListRepo by lazy { app.userListRepo }
 
     private val viewModelDisposable = CompositeDisposable()
 
@@ -35,7 +38,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initViewModel() {
-        /*viewModel = getViewModel()*/
+        viewModel = getViewModel()
 
         viewModelDisposable.addAll(
             binding.buttonRefreshUserList.buttonClickObservable().subscribe {viewModel.onRefreshUserList()},
@@ -46,10 +49,10 @@ class MainActivity : AppCompatActivity() {
         )
     }
 
-/*    private fun getViewModel(): UsersContract.ViewModel {
+    private fun getViewModel(): UsersContract.ViewModel {
         return lastCustomNonConfigurationInstance as? UsersContract.ViewModel
-            ?: UsersViewModel(app.appComponent.getUserListRepo())
-    }*/
+            ?: UsersViewModel(userListRepo)
+    }
 
     override fun onDestroy() {
         viewModelDisposable.dispose()
