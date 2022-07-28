@@ -6,10 +6,9 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
-
 import io.reactivex.rxjava3.disposables.CompositeDisposable
+import ru.gbpractice.dilib.DiTool.inject
 import ru.gbpractice.githapp.App.Companion.BUNDLE_KEY
-import ru.gbpractice.githapp.app
 import ru.gbpractice.githapp.data.retrofit.entitiesDTO.UserEntityDTO
 import ru.gbpractice.githapp.databinding.ActivityMainBinding
 import ru.gbpractice.githapp.domain.entities.UserEntity
@@ -23,7 +22,7 @@ class MainActivity : AppCompatActivity() {
     private val adapter = UsersAdapter()
     private lateinit var viewModel: UsersContract.ViewModel
 
-    private val userListRepo: UserListRepo by lazy { app.userListRepo }
+    private val userListRepo: UserListRepo = inject()
 
     private val viewModelDisposable = CompositeDisposable()
 
