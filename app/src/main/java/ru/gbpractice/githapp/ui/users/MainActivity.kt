@@ -22,7 +22,7 @@ class MainActivity : AppCompatActivity() {
     private val adapter = UsersAdapter()
     private lateinit var viewModel: UsersContract.ViewModel
 
-    private val userListRepo: UserListRepo = inject()
+    private val userListRepo: UserListRepo = inject("Retrofit")
 
     private val viewModelDisposable = CompositeDisposable()
 

@@ -4,6 +4,7 @@ import retrofit2.Retrofit
 import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import ru.gbpractice.dilib.DiTool
+import ru.gbpractice.githapp.data.MockUserListRepoImpl
 import ru.gbpractice.githapp.data.RetrofitUserDetailsRepoImpl
 import ru.gbpractice.githapp.data.RetrofitUserListRepoImpl
 import ru.gbpractice.githapp.data.retrofit.GitHubAPI
@@ -24,10 +25,13 @@ class DiModule() {
     }
 
     private val userListRepo: UserListRepo by lazy { RetrofitUserListRepoImpl(gitAPI) }
+    private val mockUserListRepo: UserListRepo by lazy { MockUserListRepoImpl()}
     private val userDetailsRepo: UserDetailsRepo by lazy { RetrofitUserDetailsRepoImpl(gitAPI) }
 
+
     init {
-        DiTool.add(userListRepo)
+        DiTool.add("Retrofit", userListRepo)
+        DiTool.add(mockUserListRepo)
         DiTool.add(userDetailsRepo)
     }
 }
