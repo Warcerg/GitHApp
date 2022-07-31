@@ -5,9 +5,10 @@ import ru.gbpractice.githapp.data.retrofit.GitHubAPI
 import ru.gbpractice.githapp.domain.entities.UserDetailsEntity
 import ru.gbpractice.githapp.domain.entities.UserRepoEntity
 import ru.gbpractice.githapp.domain.repos.UserDetailsRepo
+import javax.inject.Inject
 
 
-class RetrofitUserDetailsRepoImpl(
+class RetrofitUserDetailsRepoImpl @Inject constructor(
     private val gitAPI: GitHubAPI
     ) : UserDetailsRepo {
 

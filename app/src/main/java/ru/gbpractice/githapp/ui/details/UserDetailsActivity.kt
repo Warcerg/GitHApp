@@ -2,12 +2,13 @@ package ru.gbpractice.githapp.ui.details
 
 import android.os.Bundle
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
-import coil.api.load
+import coil.load
+import dagger.hilt.android.AndroidEntryPoint
 import io.reactivex.rxjava3.disposables.CompositeDisposable
-import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.gbpractice.githapp.App.Companion.BUNDLE_KEY
 import ru.gbpractice.githapp.data.retrofit.entitiesDTO.UserEntityDTO
 import ru.gbpractice.githapp.databinding.ActivityUserDetailsBinding
@@ -15,11 +16,12 @@ import ru.gbpractice.githapp.domain.entities.UserDetailsEntity
 import ru.gbpractice.githapp.domain.entities.UserEntity
 import ru.gbpractice.githapp.domain.entities.UserRepoEntity
 
+@AndroidEntryPoint
 class UserDetailsActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityUserDetailsBinding
     private val adapter = UserReposAdapter()
-    private val viewModel: UserDetailsViewModel by viewModel()
+    private val viewModel: UserDetailsViewModel by viewModels()
 
     private val viewModelDisposable = CompositeDisposable()
 
